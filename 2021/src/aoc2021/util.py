@@ -8,3 +8,8 @@ def read_as_list(fpath: Path, func: Callable[[str], Any] = str) -> list:
     """Return file contents as list of lines mapped using `func`."""
     with open(fpath, 'r') as f:
         return [func(line) for line in f]
+
+
+def chunks(xs: list, n: int) -> list[list]:
+    """Yield successive n-sized chunks from list."""
+    return [xs[i:i+n] for i in range(0, len(xs), n)]
