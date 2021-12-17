@@ -10,6 +10,12 @@ def read_as_list(fpath: Path, func: Callable[[str], Any] = str) -> list:
         return [func(line) for line in f]
 
 
+def read_as_str(fpath: Path) -> str:
+    """Return file contents as a single string."""
+    with open(fpath, 'r') as f:
+        return f.read()
+
+
 def chunks(xs: list, n: int) -> list[list]:
     """Yield successive n-sized chunks from list."""
     return [xs[i:i+n] for i in range(0, len(xs), n)]
@@ -35,3 +41,18 @@ def pad(xss: list[list[Any]], fill: Any) -> list[list[Any]]:
     assert is_rectangular(xss), 'list of lists is not rectangular'
     n = len(xss[0]) + 2
     return [[fill]*n] + [[fill]+xs+[fill] for xs in xss] + [[fill]*n]
+
+
+def bin2dec(bits: str) -> int:
+    """Return decimal representation of binary integer."""
+    return int(bits, base=2)
+
+
+def hex2dec(s: str) -> int:
+    """Return decimal representation of hexadecimal integer."""
+    return int(s, base=16)
+
+
+def hex2bin(s: str, chunksize: int) -> str:
+    """Return binary representation of hexadecimal integer."""
+    return ''.join('{:04b}'.format(hex2dec(c)) for c in s)
