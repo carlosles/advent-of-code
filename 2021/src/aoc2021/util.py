@@ -56,3 +56,8 @@ def hex2dec(s: str) -> int:
 def hex2bin(s: str, chunksize: int) -> str:
     """Return binary representation of hexadecimal integer."""
     return ''.join('{:04b}'.format(hex2dec(c)) for c in s)
+
+
+def natsum(n: int) -> int:
+    """Return sum of natural numbers up to n."""
+    return n * (n + 1) // 2
