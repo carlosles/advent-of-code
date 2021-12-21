@@ -40,7 +40,7 @@ def pad(xss: list[list[Any]], fill: Any) -> list[list[Any]]:
     """Return rectangular list of lists with border padding."""
     assert is_rectangular(xss), 'list of lists is not rectangular'
     n = len(xss[0]) + 2
-    return [[fill]*n] + [[fill]+xs+[fill] for xs in xss] + [[fill]*n]
+    return [[fill]*n] + [[fill]+list(xs)+[fill] for xs in xss] + [[fill]*n]
 
 
 def bin2dec(bits: str) -> int:
