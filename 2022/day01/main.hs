@@ -1,4 +1,5 @@
 import Control.Exception (assert)
+import Data.List (sort)
 import Data.List.Split (splitWhen)
 
 
@@ -16,7 +17,7 @@ solve1 :: String -> Integer
 solve1 = maximum . map (sum . map readInteger) . paragraphs
 
 solve2 :: String -> Integer
-solve2 x = 45000
+solve2 = sum . take 3 . reverse . sort . map (sum . map readInteger) . paragraphs
 
 paragraphs :: String -> [[String]]
 paragraphs = splitWhen null . lines
