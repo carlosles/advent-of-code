@@ -14,10 +14,13 @@ main = do
 
 
 solve1 :: String -> Integer
-solve1 = maximum . map (sum . map readInteger) . paragraphs
+solve1 = maximum . totalCalories
 
 solve2 :: String -> Integer
-solve2 = sum . take 3 . reverse . sort . map (sum . map readInteger) . paragraphs
+solve2 = sum . take 3 . reverse . sort . totalCalories
+
+totalCalories :: String -> [Integer]
+totalCalories = map (sum . map readInteger) . paragraphs
 
 paragraphs :: String -> [[String]]
 paragraphs = splitWhen null . lines
