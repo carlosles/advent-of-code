@@ -30,6 +30,9 @@ cabal.project.local
 cabal.project.local~
 .HTF/
 .ghc.environment.*
+ 
+# Daily unix executables
+main
 
 # Distribution / packaging
 .Python
