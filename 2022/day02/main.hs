@@ -1,8 +1,6 @@
 import Control.Exception (assert)
 import Data.List (sort)
 import Data.List.Split (splitWhen)
-import System.Posix (LockRequest(ReadLock))
-import CoreSyn (OutAlt)
 
 
 -- Day 2: Rock Paper Scissors
@@ -11,32 +9,47 @@ main = do
     input <- readFile "input.txt"
     sample <- readFile "sample.txt"
     let part1 = assert (solve1 sample == 15) solve1 input
-    let part2 = assert (solve2 sample == 200) solve2 input
+    let part2 = assert (solve2 sample == 12) solve2 input
     print (part1, part2)
 
 
 solve1 :: String -> Integer
-solve1 = sum . map (score . play) . lines 
+solve1 = sum . map (score . play1 . instruction) . lines 
 
 solve2 :: String -> Integer
-solve2 x = 200
+solve2 = sum . map (score . play2 . instruction) . lines
 
-play :: String -> (Shape, Shape)
-play s = (opponentShape (head s), ownShape (last s))
+instruction :: String -> (Char, Char)
+instruction s = (head s, last s)
 
+play1 :: (Char, Char) -> (Shape, Shape)
+play1 (opp, own) = (shape opp, decrypt1 own)
+
+play2 :: (Char, Char) -> (Shape, Shape)
+play2 (opp, own) = (opp_shape, inverse target_outcome opp_shape)
+    where
+        opp_shape = shape opp
+        target_outcome = decrypt2 own
+ 
 data Shape = Rock | Paper | Scissors deriving Eq
 
-ownShape :: Char -> Shape
-ownShape 'X' = Rock
-ownShape 'Y' = Paper
-ownShape 'Z' = Scissors
-ownShape _ = undefined
+decrypt1 :: Char -> Shape
+decrypt1 'X' = Rock
+decrypt1 'Y' = Paper
+decrypt1 'Z' = Scissors
+decrypt1 _ = undefined
 
-opponentShape :: Char -> Shape
-opponentShape 'A' = Rock
-opponentShape 'B' = Paper
-opponentShape 'C' = Scissors
-opponentShape _ = undefined
+decrypt2 :: Char -> Outcome
+decrypt2 'X' = Loss
+decrypt2 'Y' = Draw
+decrypt2 'Z' = Win
+decrypt2 _ = undefined
+
+shape :: Char -> Shape
+shape 'A' = Rock
+shape 'B' = Paper
+shape 'C' = Scissors
+shape _ = undefined
 
 score :: (Shape, Shape) -> Integer
 score (opp, own) = outcomeScore (outcome own opp) + shapeScore own
@@ -47,6 +60,15 @@ outcome Paper Rock = Win
 outcome Scissors Paper = Win
 outcome x y | x == y = Draw
             | otherwise = Loss
+
+inverse :: Outcome -> Shape -> Shape
+inverse Win Rock = Paper
+inverse Win Paper = Scissors
+inverse Win Scissors = Rock
+inverse Loss Rock = Scissors
+inverse Loss Paper = Rock
+inverse Loss Scissors = Paper
+inverse Draw x = x
 
 data Outcome = Win | Draw | Loss
 
