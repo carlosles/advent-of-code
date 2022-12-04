@@ -1,8 +1,9 @@
 module Main where
 
 import Control.Exception (assert)
-import Data.List (intersect)
 import Data.Char (ord)
+import Data.List (intersect)
+import Data.List.Split (chunksOf)
 import Data.Tuple (uncurry)
 
 
@@ -12,7 +13,7 @@ main = do
     input <- readFile "input.txt"
     sample <- readFile "sample.txt"
     let part1 = assert (solve1 sample == 157) solve1 input
-    let part2 = assert (solve2 sample == 200) solve2 input
+    let part2 = assert (solve2 sample == 70) solve2 input
     print (part1, part2)
 
 
@@ -20,7 +21,7 @@ solve1 :: String -> Integer
 solve1 = sum . map (priority . head . uncurry intersect . halve) . lines
 
 solve2 :: String -> Integer
-solve2 x = 200
+solve2 = sum . map (priority . badge) . chunksOf 3 . lines
 
 priority :: Char -> Integer
 priority c | c < 'a' = toInteger (1 + ord c - ord 'A') + priority 'z'
@@ -28,3 +29,6 @@ priority c | c < 'a' = toInteger (1 + ord c - ord 'A') + priority 'z'
 
 halve :: [a] -> ([a], [a])
 halve xs = splitAt (length xs `div` 2) xs
+
+badge :: [String] -> Char
+badge cs = head $ foldr intersect (head cs) (tail cs)
