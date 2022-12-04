@@ -1,6 +1,6 @@
+module Main where
+
 import Control.Exception (assert)
-import Data.List (sort)
-import Data.List.Split (splitWhen)
 
 
 -- Day XX: Title
